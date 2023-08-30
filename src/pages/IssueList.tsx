@@ -18,11 +18,14 @@ export type Issue = {
   };
 };
 
+const OWNER = 'facebook';
+const REPO = 'react';
+
 export const IssueList = () => {
   const [issues, setIssues] = useState<Issue[]>();
 
   useEffect(() => {
-    getIssueList({ owner: 'facebook', repo: 'react', page: 1 })
+    getIssueList({ owner: OWNER, repo: REPO, page: 1 })
       .then(res => {
         const { status, data } = res;
         if (status) setIssues(data);
@@ -38,7 +41,7 @@ export const IssueList = () => {
 
   return (
     <StyledContainer>
-      <IssueHeader />
+      <IssueHeader owner={OWNER} repo={REPO} />
       {issues &&
         issues.map(({ number, title, user, created_at, comments }, idx) =>
           checkIdxForAd(idx) ? (
