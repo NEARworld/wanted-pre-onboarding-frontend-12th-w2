@@ -22,7 +22,7 @@ export const IssueDetail = () => {
         user={user}
         created_at={created_at}
         comments={comments}
-        cursor='default'
+        cursor='inherit'
       />
     );
   return null;
