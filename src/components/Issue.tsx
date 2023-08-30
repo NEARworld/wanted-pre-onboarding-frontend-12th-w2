@@ -1,8 +1,9 @@
 import { FC, memo } from 'react';
 
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-type Props = {
+export type Props = {
   id: number;
   title: string;
   author: string;
@@ -11,8 +12,11 @@ type Props = {
 };
 
 const Issue: FC<Props> = ({ id, title, author, date, comments }) => {
+  const navigate = useNavigate();
+  const navigateToIssueDetail = () =>
+    navigate(`${id}`, { state: { id, title, author, date, comments } });
   return (
-    <StyledContainer>
+    <StyledContainer onClick={navigateToIssueDetail}>
       <div>
         <StyledHeader>
           <span>#{id}</span>
