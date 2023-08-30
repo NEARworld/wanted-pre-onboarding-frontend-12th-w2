@@ -1,4 +1,5 @@
 import { useLocation } from 'react-router-dom';
+import styled from 'styled-components';
 
 import { IssueType } from 'pages/IssueList';
 
@@ -12,18 +13,28 @@ export const IssueDetail = () => {
     return typeof state === 'object';
   };
 
-  const { number, title, user, created_at, comments } = navigateState;
+  if (validateState(navigateState)) {
+    const { number, title, user, created_at, comments } = navigateState;
 
-  if (validateState(navigateState))
     return (
-      <MemoizedIssue
-        number={number}
-        title={title}
-        user={user}
-        created_at={created_at}
-        comments={comments}
-        cursor='inherit'
-      />
+      <StyledContainer>
+        <img width='100' height='100' src={user.avatar_url} />
+        <MemoizedIssue
+          number={number}
+          title={title}
+          user={user}
+          created_at={created_at}
+          comments={comments}
+          cursor='inherit'
+        />
+      </StyledContainer>
     );
+  }
   return null;
 };
+
+const StyledContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  align-items: center;
+`;
