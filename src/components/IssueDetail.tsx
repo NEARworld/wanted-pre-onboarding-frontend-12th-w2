@@ -1,13 +1,13 @@
 import { useLocation } from 'react-router-dom';
 
-import { type Issue } from 'pages/IssueList';
+import { IssueType } from 'pages/IssueList';
 
 import { MemoizedIssue } from './Issue';
 
 export const IssueDetail = () => {
   const navigateState = useLocation().state ?? 100;
 
-  const validateState = (state: Issue): state is Issue => {
+  const validateState = (state: IssueType): state is IssueType => {
     if (!state) return false;
     return typeof state === 'object';
   };

@@ -7,7 +7,7 @@ import { MemoizedAdvertisement } from 'components/Advertisement';
 import { MemoizedIssue } from 'components/Issue';
 import { IssueHeader } from 'components/IssueHeader';
 
-export type Issue = {
+export type IssueType = {
   number: number;
   title: string;
   comments: number;
@@ -22,7 +22,7 @@ const OWNER = 'facebook';
 const REPO = 'react';
 
 export const IssueList = () => {
-  const [issues, setIssues] = useState<Issue[]>();
+  const [issues, setIssues] = useState<IssueType[]>();
 
   useEffect(() => {
     getIssueList({ owner: OWNER, repo: REPO, page: 1 })

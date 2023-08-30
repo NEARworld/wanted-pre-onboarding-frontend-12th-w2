@@ -3,9 +3,9 @@ import { FC, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-import { type Issue } from 'pages/IssueList';
+import { IssueType } from 'pages/IssueList';
 
-const Issue: FC<Issue> = ({ number, title, user, created_at, comments }) => {
+const Issue: FC<IssueType> = ({ number, title, user, created_at, comments }) => {
   const navigate = useNavigate();
   const navigateToIssueDetail = () =>
     navigate(`${number}`, { state: { number, title, user, created_at, comments } });
@@ -14,7 +14,7 @@ const Issue: FC<Issue> = ({ number, title, user, created_at, comments }) => {
       <div>
         <StyledHeader>
           <span>#{number}</span>
-          <span>{title}</span>
+          <StyledTitle>{title}</StyledTitle>
         </StyledHeader>
         <StyledBody>
           <span>작성자: {user.login}</span>
@@ -44,6 +44,11 @@ const StyledHeader = styled.div`
   gap: 10px;
   font-size: 20px;
   padding: 10px;
+`;
+const StyledTitle = styled.span`
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 const StyledBody = styled.div`
   padding: 10px;
