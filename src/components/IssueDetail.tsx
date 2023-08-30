@@ -16,15 +16,13 @@ export const IssueDetail = () => {
 
   if (validateState(navigateState))
     return (
-      <div>
-        <MemoizedIssue
-          number={number}
-          title={title}
-          user={user}
-          created_at={created_at}
-          comments={comments}
-        />
-      </div>
+      <MemoizedIssue
+        number={number}
+        title={title}
+        user={user}
+        created_at={created_at}
+        comments={comments}
+      />
     );
   return null;
 };
