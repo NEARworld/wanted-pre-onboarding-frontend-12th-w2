@@ -16,6 +16,7 @@ const Issue: FC<Props> = ({ number, title, user, created_at, comments, cursor = 
   const navigateToIssueDetail = () =>
     pathname === '/' &&
     navigate(`${number}`, { state: { number, title, user, created_at, comments } });
+
   return (
     <StyledContainer onClick={navigateToIssueDetail} cursor={cursor}>
       <div>
