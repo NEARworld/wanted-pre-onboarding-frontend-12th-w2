@@ -46,7 +46,7 @@ const StyledHeader = styled.div`
   padding: 10px;
 `;
 const StyledTitle = styled.span`
-  width: 100%;
+  width: 300px;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
