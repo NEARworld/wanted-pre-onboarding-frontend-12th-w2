@@ -1,10 +1,15 @@
 import { createBrowserRouter } from 'react-router-dom';
 
-import { Home } from 'pages/Home';
+import { IssueDetail } from 'components/IssueDetail';
+import { IssueList } from 'pages/IssueList';
 
 export const router = createBrowserRouter([
   {
     path: '',
-    element: <Home />,
+    element: <IssueList />,
+  },
+  {
+    path: ':id',
+    element: <IssueDetail />,
   },
 ]);
