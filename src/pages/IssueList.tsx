@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
-
 import styled from 'styled-components';
 
-import { getIssueList } from 'apis/config';
 import { MemoizedAdvertisement } from 'components/Advertisement';
 import { MemoizedIssue } from 'components/Issue';
 import { IssueHeader } from 'components/IssueHeader';
+import { useIssueList } from 'hooks/useIssueList';
 
 export type IssueType = {
   number: number;
@@ -22,24 +20,7 @@ const OWNER = 'facebook';
 const REPO = 'react';
 
 export const IssueList = () => {
-  const [issues, setIssues] = useState<IssueType[]>();
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    setIsLoading(true);
-    getIssueList({ owner: OWNER, repo: REPO, page: 1 })
-      .then(res => {
-        const { status, data } = res;
-        if (status) setIssues(data);
-        setIsLoading(false);
-      })
-      .catch(e => console.log(e));
-  }, []);
-
-  useEffect(() => {
-    console.log(issues);
-  }, [issues]);
-
+  const { issues, isLoading } = useIssueList({ owner: OWNER, repo: REPO });
   const checkIdxForAd = (idx: number) => (idx + 1) % 5;
 
   if (!isLoading)
