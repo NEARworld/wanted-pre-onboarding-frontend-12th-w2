@@ -37,5 +37,4 @@ export const IssueList = () => {
 const StyledContainer = styled.div`
   display: grid;
   width: 500px;
-  margin: 0 auto;
 `;
