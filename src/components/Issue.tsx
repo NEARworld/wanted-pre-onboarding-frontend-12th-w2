@@ -1,16 +1,23 @@
-import { FC, memo } from 'react';
+import { CSSProperties, FC, memo } from 'react';
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 import { IssueType } from 'pages/IssueList';
 
-const Issue: FC<IssueType> = ({ number, title, user, created_at, comments }) => {
+type Props = IssueType & {
+  cursor?: CSSProperties['cursor'];
+};
+
+const Issue: FC<Props> = ({ number, title, user, created_at, comments, cursor = 'pointer' }) => {
   const navigate = useNavigate();
+  const pathname = useLocation().pathname;
+
   const navigateToIssueDetail = () =>
+    pathname === '/' &&
     navigate(`${number}`, { state: { number, title, user, created_at, comments } });
   return (
-    <StyledContainer onClick={navigateToIssueDetail}>
+    <StyledContainer onClick={navigateToIssueDetail} cursor={cursor}>
       <div>
         <StyledHeader>
           <span>#{number}</span>
@@ -30,12 +37,12 @@ const Issue: FC<IssueType> = ({ number, title, user, created_at, comments }) => 
 
 export const MemoizedIssue = memo(Issue);
 
-const StyledContainer = styled.div`
+const StyledContainer = styled.div<{ cursor: CSSProperties['cursor'] }>`
   width: 500px;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px black solid;
-  cursor: pointer;
+  cursor: ${props => props.cursor};
   &:hover {
     background-color: whitesmoke;
   }
