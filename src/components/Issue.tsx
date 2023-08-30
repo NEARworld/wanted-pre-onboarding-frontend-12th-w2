@@ -3,28 +3,22 @@ import { FC, memo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-export type Props = {
-  id: number;
-  title: string;
-  author: string;
-  date: Date;
-  comments: number;
-};
+import { type Issue } from 'pages/IssueList';
 
-const Issue: FC<Props> = ({ id, title, author, date, comments }) => {
+const Issue: FC<Issue> = ({ number, title, user, created_at, comments }) => {
   const navigate = useNavigate();
   const navigateToIssueDetail = () =>
-    navigate(`${id}`, { state: { id, title, author, date, comments } });
+    navigate(`${number}`, { state: { number, title, user, created_at, comments } });
   return (
     <StyledContainer onClick={navigateToIssueDetail}>
       <div>
         <StyledHeader>
-          <span>#{id}</span>
+          <span>#{number}</span>
           <span>{title}</span>
         </StyledHeader>
         <StyledBody>
-          <span>작성자: {author}</span>
-          <span>작성일: {date.toLocaleDateString()}</span>
+          <span>작성자: {user.login}</span>
+          <span>작성일: {created_at}</span>
         </StyledBody>
       </div>
       <StyledCommentCount>

@@ -1,35 +1,59 @@
+import { useEffect, useState } from 'react';
+
 import styled from 'styled-components';
 
+import { getIssueList } from 'apis/config';
 import { MemoizedAdvertisement } from 'components/Advertisement';
 import { MemoizedIssue } from 'components/Issue';
 import { IssueHeader } from 'components/IssueHeader';
 
+export type Issue = {
+  number: number;
+  title: string;
+  comments: number;
+  created_at: string;
+  user: {
+    login: string;
+    avatar_url: string;
+  };
+};
+
 export const IssueList = () => {
+  const [issues, setIssues] = useState<Issue[]>();
+
+  useEffect(() => {
+    getIssueList({ owner: 'facebook', repo: 'react', page: 1 })
+      .then(res => {
+        const { status, data } = res;
+        if (status) setIssues(data);
+      })
+      .catch(e => console.log(e));
+  }, []);
+
+  useEffect(() => {
+    console.log(issues);
+  }, [issues]);
+
   const checkIdxForAd = (idx: number) => (idx + 1) % 5;
 
   return (
     <StyledContainer>
       <IssueHeader />
-      {Array.from({ length: 20 }, () => ({
-        id: 1,
-        title: 'my issue title',
-        author: 'nearworld',
-        date: new Date(),
-        comments: 100,
-      })).map(({ id, title, author, date, comments }, idx) =>
-        checkIdxForAd(idx) ? (
-          <MemoizedIssue
-            key={idx}
-            id={id}
-            title={title}
-            author={author}
-            date={date}
-            comments={comments}
-          />
-        ) : (
-          <MemoizedAdvertisement />
-        ),
-      )}
+      {issues &&
+        issues.map(({ number, title, user, created_at, comments }, idx) =>
+          checkIdxForAd(idx) ? (
+            <MemoizedIssue
+              key={idx}
+              number={number}
+              title={title}
+              user={user}
+              created_at={created_at}
+              comments={comments}
+            />
+          ) : (
+            <MemoizedAdvertisement key={idx} />
+          ),
+        )}
     </StyledContainer>
   );
 };
