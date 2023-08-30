@@ -12,7 +12,7 @@ export const useIssueList = (target: { owner: string; repo: string; ad_nth: numb
   const { owner, repo, ad_nth } = target;
 
   const filterIssue = (idx: number, issue: IssueType) => {
-    const isAdLocation = !((idx + 1) % ad_nth);
+    const isAdLocation = (idx + 1) % ad_nth;
     if (isAdLocation) return <MemoizedIssue key={idx} {...issue} />;
     return <MemoizedAdvertisement key={idx} />;
   };
