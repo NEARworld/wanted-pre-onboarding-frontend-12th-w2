@@ -14,7 +14,7 @@ export const IssueDetail = () => {
   };
 
   if (validateState(navigateState)) {
-    const { number, title, user, created_at, comments } = navigateState;
+    const { number, title, user, created_at, comments, body } = navigateState;
 
     return (
       <StyledContainer>
@@ -26,6 +26,7 @@ export const IssueDetail = () => {
           created_at={created_at}
           comments={comments}
           cursor='inherit'
+          body={body}
         />
       </StyledContainer>
     );
