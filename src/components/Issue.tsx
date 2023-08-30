@@ -31,6 +31,7 @@ const Issue: FC<IssueType> = ({ number, title, user, created_at, comments }) => 
 export const MemoizedIssue = memo(Issue);
 
 const StyledContainer = styled.div`
+  width: 500px;
   display: flex;
   justify-content: space-between;
   border-bottom: 1px black solid;
