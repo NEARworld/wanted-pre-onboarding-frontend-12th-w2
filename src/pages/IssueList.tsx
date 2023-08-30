@@ -1,7 +1,5 @@
 import styled from 'styled-components';
 
-import { MemoizedAdvertisement } from 'components/Advertisement';
-import { MemoizedIssue } from 'components/Issue';
 import { IssueHeader } from 'components/IssueHeader';
 import { useIssueList } from 'hooks/useIssueList';
 
@@ -22,13 +20,11 @@ const REPO = 'react';
 const AD_LOCATION = 5;
 
 export const IssueList = () => {
-  const { issues, isLoading } = useIssueList({ owner: OWNER, repo: REPO });
-
-  const filterIssue = (idx: number, issue: IssueType) => {
-    const isAdLocation = !((idx + 1) % AD_LOCATION);
-    if (isAdLocation) return <MemoizedIssue key={idx} {...issue} />;
-    return <MemoizedAdvertisement key={idx} />;
-  };
+  const { issues, isLoading, filterIssue } = useIssueList({
+    owner: OWNER,
+    repo: REPO,
+    ad_nth: AD_LOCATION,
+  });
 
   if (!isLoading)
     return (
