@@ -1,3 +1,4 @@
+import * as marked from 'marked';
 import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -18,16 +19,20 @@ export const IssueDetail = () => {
 
     return (
       <StyledContainer>
-        <img width='100' height='100' src={user.avatar_url} />
-        <MemoizedIssue
-          number={number}
-          title={title}
-          user={user}
-          created_at={created_at}
-          comments={comments}
-          cursor='inherit'
-          body={body}
-        />
+        <div style={{ display: 'grid' }}>
+          <div style={{ display: 'flex' }}>
+            <img width='100' height='100' src={user.avatar_url} />
+            <MemoizedIssue
+              number={number}
+              title={title}
+              user={user}
+              created_at={created_at}
+              comments={comments}
+              cursor='inherit'
+            />
+          </div>
+          <div dangerouslySetInnerHTML={{ __html: body ? marked.parse(body) : '' }} />
+        </div>
       </StyledContainer>
     );
   }

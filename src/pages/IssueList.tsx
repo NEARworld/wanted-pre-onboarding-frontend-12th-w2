@@ -8,7 +8,7 @@ export type IssueType = {
   title: string;
   comments: number;
   created_at: string;
-  body: string;
+  body?: string;
   user: {
     login: string;
     avatar_url: string;

@@ -9,13 +9,21 @@ type Props = IssueType & {
   cursor?: CSSProperties['cursor'];
 };
 
-const Issue: FC<Props> = ({ number, title, user, created_at, comments, cursor = 'pointer' }) => {
+const Issue: FC<Props> = ({
+  number,
+  title,
+  user,
+  created_at,
+  comments,
+  body,
+  cursor = 'pointer',
+}) => {
   const navigate = useNavigate();
   const pathname = useLocation().pathname;
 
   const navigateToIssueDetail = () =>
     pathname === '/' &&
-    navigate(`${number}`, { state: { number, title, user, created_at, comments } });
+    navigate(`${number}`, { state: { number, title, user, created_at, comments, body } });
 
   return (
     <StyledContainer onClick={navigateToIssueDetail} cursor={cursor}>
