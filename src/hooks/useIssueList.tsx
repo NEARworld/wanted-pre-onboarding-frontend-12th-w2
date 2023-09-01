@@ -5,9 +5,14 @@ import { MemoizedAdvertisement } from 'components/Advertisement';
 import { MemoizedIssue } from 'components/Issue';
 import { IssueType } from 'pages/IssueList';
 
+type OctokitError = {
+  status: 403 | 404 | 422;
+};
+
 export const useIssueList = (target: { owner: string; repo: string; ad_nth: number }) => {
   const [issues, setIssues] = useState<IssueType[]>();
   const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const { owner, repo, ad_nth } = target;
 
@@ -19,18 +24,29 @@ export const useIssueList = (target: { owner: string; repo: string; ad_nth: numb
 
   useEffect(() => {
     setIsLoading(true);
+
     getIssueList({ owner, repo, page: 1 })
       .then(res => {
-        const { status, data } = res;
-        if (status) setIssues(data);
+        if (res.status) setIssues(res.data);
         setIsLoading(false);
       })
-      .catch(e => console.log(e));
+      .catch((error: OctokitError) => {
+        if (error && typeof error === 'object' && 'status' in error) {
+          setErrorMessage(
+            {
+              404: '찾고자하는 데이터가 없습니다.',
+              403: 'API 요청 제한 횟수 초과로 인해 요청이 제한되었습니다.',
+              422: '인증이 실패했거나 너무 많은 요청 시도가 있습니다.',
+            }[error.status],
+          );
+        } else setErrorMessage('알 수 없는 네트워크 에러가 발생했습니다.');
+      });
   }, []);
 
   return {
     issues,
     isLoading,
     filterIssue,
+    errorMessage,
   };
 };
