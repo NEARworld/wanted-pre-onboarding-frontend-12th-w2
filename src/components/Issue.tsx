@@ -9,6 +9,11 @@ type Props = IssueType & {
   cursor?: CSSProperties['cursor'];
 };
 
+export const getKoreanDateFormat = (date: string) => {
+  const dateObj = new Date(date);
+  return `${dateObj.getFullYear()}년 ${dateObj.getMonth() + 1}월 ${dateObj.getDate()}일`;
+};
+
 const Issue: FC<Props> = ({
   number,
   title,
@@ -34,7 +39,7 @@ const Issue: FC<Props> = ({
         </StyledHeader>
         <StyledBody>
           <span>작성자: {user.login}</span>
-          <span>작성일: {created_at}</span>
+          <span>작성일: {getKoreanDateFormat(created_at)}</span>
         </StyledBody>
       </div>
       <StyledCommentCount>
