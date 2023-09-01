@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 import { IssueHeader } from 'components/IssueHeader';
+import { Loading } from 'components/Loading';
 import { useIssueList } from 'hooks/useIssueList';
 import { ErrorComponent } from 'pages/ErrorComponent';
 
@@ -16,8 +17,8 @@ export type IssueType = {
   };
 };
 
-const OWNER = 'facebook';
-const REPO = 'react';
+export const OWNER = 'facebook';
+export const REPO = 'react';
 const AD_LOCATION = 5;
 
 export const IssueList = () => {
@@ -29,11 +30,12 @@ export const IssueList = () => {
 
   if (errorMessage) return <ErrorComponent error={errorMessage} />;
 
-  if (!isLoading)
+  if (issues?.length !== 0)
     return (
       <StyledContainer>
         <IssueHeader owner={OWNER} repo={REPO} />
         {issues && issues.map((issue, idx) => filterIssue(idx, issue))}
+        {isLoading && <Loading />}
       </StyledContainer>
     );
   return <span>loading...</span>;

@@ -9,12 +9,14 @@ type OctokitError = {
   status: 403 | 404 | 422;
 };
 
-export const useIssueList = (target: { owner: string; repo: string; ad_nth: number }) => {
-  const [issues, setIssues] = useState<IssueType[]>();
+export const useIssueList = (params: { owner: string; repo: string; ad_nth: number }) => {
+  const [issues, setIssues] = useState<IssueType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isBottom, setIsBottom] = useState(false);
+  const [page, setPage] = useState(1);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { owner, repo, ad_nth } = target;
+  const { owner, repo, ad_nth } = params;
 
   const filterIssue = (idx: number, issue: IssueType) => {
     const isAdLocation = (idx + 1) % ad_nth;
@@ -22,13 +24,25 @@ export const useIssueList = (target: { owner: string; repo: string; ad_nth: numb
     return <MemoizedAdvertisement key={idx} />;
   };
 
+  const handleScroll = () => {
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (window.scrollY >= scrollableHeight) setIsBottom(true);
+  };
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   useEffect(() => {
     setIsLoading(true);
+    if (isBottom) setIsBottom(false);
 
-    getIssueList({ owner, repo, page: 1 })
+    getIssueList({ owner, repo, page })
       .then(res => {
-        if (res.status) setIssues(res.data);
+        if (res.status) setIssues([...issues, ...res.data]);
         setIsLoading(false);
+        setPage(page + 1);
       })
       .catch((error: OctokitError) => {
         if (error && typeof error === 'object' && 'status' in error) {
@@ -41,7 +55,7 @@ export const useIssueList = (target: { owner: string; repo: string; ad_nth: numb
           );
         } else setErrorMessage('알 수 없는 네트워크 에러가 발생했습니다.');
       });
-  }, []);
+  }, [isBottom]);
 
   return {
     issues,
