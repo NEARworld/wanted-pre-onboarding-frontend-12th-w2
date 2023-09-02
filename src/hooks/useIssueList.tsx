@@ -3,29 +3,30 @@ import { useEffect, useState } from 'react';
 import { getIssueList } from 'apis/config';
 import { MemoizedAdvertisement } from 'components/Advertisement';
 import { MemoizedIssue } from 'components/Issue';
-import { IssueType } from 'pages/IssueList';
+import { AD_LOCATION, IssueType, OWNER, REPO } from 'pages/IssueList';
 
 type OctokitError = {
   status: 403 | 404 | 422;
 };
 
-export const useIssueList = (params: { owner: string; repo: string; ad_nth: number }) => {
+export const useIssueList = () => {
   const [issues, setIssues] = useState<IssueType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { owner, repo, ad_nth } = params;
-
   const filterIssue = (idx: number, issue: IssueType) => {
-    const isAdLocation = (idx + 1) % ad_nth;
+    const isAdLocation = (idx + 1) % AD_LOCATION;
     if (isAdLocation) return <MemoizedIssue key={idx} {...issue} />;
     return <MemoizedAdvertisement key={idx} />;
   };
 
   const handleScroll = () => {
     const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (window.scrollY >= scrollableHeight) setIsLoading(true);
+    if (window.scrollY >= scrollableHeight) {
+      setIsLoading(true);
+      setPage(prevState => prevState + 1);
+    }
   };
 
   useEffect(() => {
@@ -34,11 +35,10 @@ export const useIssueList = (params: { owner: string; repo: string; ad_nth: numb
   }, []);
 
   useEffect(() => {
-    getIssueList({ owner, repo, page })
+    getIssueList({ owner: OWNER, repo: REPO, page })
       .then(res => {
         if (res.status) setIssues(prevState => [...prevState, ...res.data]);
         setIsLoading(false);
-        setPage(prevState => prevState + 1);
       })
       .catch((error: OctokitError) => {
         if (error && typeof error === 'object' && 'status' in error) {
@@ -51,7 +51,7 @@ export const useIssueList = (params: { owner: string; repo: string; ad_nth: numb
           );
         } else setErrorMessage('알 수 없는 네트워크 에러가 발생했습니다.');
       });
-  }, [isLoading, owner, repo, page]);
+  }, [page]);
 
   return {
     issues,

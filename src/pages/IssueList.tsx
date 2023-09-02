@@ -19,14 +19,10 @@ export type IssueType = {
 
 export const OWNER = 'facebook';
 export const REPO = 'react';
-const AD_LOCATION = 5;
+export const AD_LOCATION = 5;
 
 export const IssueList = () => {
-  const { issues, isLoading, filterIssue, errorMessage } = useIssueList({
-    owner: OWNER,
-    repo: REPO,
-    ad_nth: AD_LOCATION,
-  });
+  const { issues, isLoading, filterIssue, errorMessage } = useIssueList();
 
   if (errorMessage) return <ErrorComponent error={errorMessage} />;
 
