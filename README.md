@@ -10,8 +10,8 @@ https://amazing-capybara-74db0f.netlify.app/
 ## 실행 방법
 
 ```
-$ npm install
-$ npm start
+ㅜpm install
+npm start
 ```
 
 ## 기술 스택
