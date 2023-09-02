@@ -2,7 +2,7 @@
 
 ## 프로젝트 정보
 
-Github API를 이용하여 react repository의 issue 들을 보여주며 무한 스크롤 기능이 적용되어 있습니다.
+Github API를 이용하여 react repository의 issue 들을 보여주며 인피니트 스크롤 기능이 적용되어 있습니다.
 
 ## 배포 링크
 https://amazing-capybara-74db0f.netlify.app/
@@ -10,10 +10,7 @@ https://amazing-capybara-74db0f.netlify.app/
 ## 실행 방법
 
 ```
-$ git clone git@github.com:kimdonggu42/wanted-preonboarding-week-2-assignment.git
-
 $ npm install
-
 $ npm start
 ```
 
