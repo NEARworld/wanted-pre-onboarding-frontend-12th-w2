@@ -12,7 +12,6 @@ type OctokitError = {
 export const useIssueList = (params: { owner: string; repo: string; ad_nth: number }) => {
   const [issues, setIssues] = useState<IssueType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isBottom, setIsBottom] = useState(false);
   const [page, setPage] = useState(1);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -26,7 +25,7 @@ export const useIssueList = (params: { owner: string; repo: string; ad_nth: numb
 
   const handleScroll = () => {
     const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-    if (window.scrollY >= scrollableHeight) setIsBottom(true);
+    if (window.scrollY >= scrollableHeight) setIsLoading(true);
   };
 
   useEffect(() => {
@@ -35,14 +34,11 @@ export const useIssueList = (params: { owner: string; repo: string; ad_nth: numb
   }, []);
 
   useEffect(() => {
-    setIsLoading(true);
-    if (isBottom) setIsBottom(false);
-
     getIssueList({ owner, repo, page })
       .then(res => {
-        if (res.status) setIssues([...issues, ...res.data]);
+        if (res.status) setIssues(prevState => [...prevState, ...res.data]);
         setIsLoading(false);
-        setPage(page + 1);
+        setPage(prevState => prevState + 1);
       })
       .catch((error: OctokitError) => {
         if (error && typeof error === 'object' && 'status' in error) {
@@ -55,7 +51,7 @@ export const useIssueList = (params: { owner: string; repo: string; ad_nth: numb
           );
         } else setErrorMessage('알 수 없는 네트워크 에러가 발생했습니다.');
       });
-  }, [isBottom]);
+  }, [isLoading, owner, repo, page]);
 
   return {
     issues,

@@ -21,7 +21,7 @@ export const IssueDetail = () => {
       <StyledContainer>
         <div style={{ display: 'grid' }}>
           <div style={{ display: 'flex' }}>
-            <img width='100' height='100' src={user.avatar_url} />
+            <img alt='avatar' width='100' height='100' src={user.avatar_url} />
             <MemoizedIssue
               number={number}
               title={title}
